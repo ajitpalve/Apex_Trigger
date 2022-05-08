@@ -1,0 +1,15 @@
+trigger TransactionTrigger on Transaction__c (after insert, before delete) {
+    
+    if( Trigger.isBefore && Trigger.isDelete ) {
+        TransactionTriggerHandler.restrictTranDelete();
+    }
+    
+    
+    if( Trigger.isAfter && Trigger.isInsert ) {
+        Set<Id> setBankAccIds = TransactionDispatcher.getBankAccountIds(Trigger.new);
+        
+        TransactionTriggerHandler.updateAmountOnAccount(Trigger.new, setBankAccIds);
+    }
+    
+
+}

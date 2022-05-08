@@ -1,0 +1,9 @@
+trigger BankAccountTrigger on Bank_Account__c (before insert, before update, after delete) {
+    
+    
+    if(Trigger.isBefore && ( Trigger.isInsert || Trigger.isUpdate )) {
+        BankAccountTriggerHandler.validateMinimumBal(Trigger.new);
+    }
+    
+
+}

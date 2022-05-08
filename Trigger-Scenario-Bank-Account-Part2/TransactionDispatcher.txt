@@ -1,0 +1,13 @@
+public class TransactionDispatcher {
+    
+    public static Set<Id> getBankAccountIds(List<Transaction__c> lstTrasactions) {
+        Set<Id> setBankAccIds = new Set<Id>();       
+        
+        for(Transaction__c trans : lstTrasactions) {
+            setBankAccIds.add(trans.Bank_Account__c);
+        }
+        
+        return setBankAccIds;
+    }
+
+}

@@ -1,0 +1,36 @@
+public class TransactionTriggerHandler {
+    
+    class TransactionException extends Exception {}
+    
+    public static void restrictTranDelete() {        
+        throw new TransactionException('You are not allowed to delete Transaction.');        
+    }
+    
+    public static void updateAmountOnAccount(List<Transaction__c> lstTrasactions, Set<Id> setBankAccIds) {
+        List<Bank_Account__c> lstForDeposite = new List<Bank_Account__c>();
+        List<Bank_Account__c> lstForWithdraw = new List<Bank_Account__c>();
+        Map<Id, Bank_Account__c> mapBankAccs = new Map<Id, Bank_Account__c>([SELECT Id, Balance__c FROM Bank_Account__c WHERE Id IN : setBankAccIds ]);
+        
+        for(Transaction__c trans : lstTrasactions) {
+            Bank_Account__c bank = mapBankAccs.get(trans.Bank_Account__c);
+            
+            if(trans.Operation__c == 'Deposite') {                
+                bank.Balance__c = bank.Balance__c + trans.Amount__c;
+                lstForDeposite.add(bank);
+            } else if(trans.Operation__c == 'Withdraw') {                
+                bank.Balance__c = bank.Balance__c - trans.Amount__c;
+                lstForWithdraw.add(bank);
+            }
+        }
+        
+        if(!lstForDeposite.isEmpty()) {
+            update lstForDeposite;
+        }
+        
+        if(!lstForWithdraw.isEmpty()) {
+            update lstForWithdraw;
+        }
+        
+    }
+
+}

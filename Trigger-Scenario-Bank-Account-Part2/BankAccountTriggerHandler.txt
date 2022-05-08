@@ -1,0 +1,25 @@
+public class BankAccountTriggerHandler {
+    
+    private static Id savingAccRecordTypeId = Schema.SObjectType.Bank_Account__c.getRecordTypeInfosByName()
+        										.get('Savings Account').getRecordTypeId();
+    private static Id currentAccRecordTypeId = Schema.SObjectType.Bank_Account__c.getRecordTypeInfosByName()
+        										.get('Current Account').getRecordTypeId();
+    
+    
+    // Validation - Minimum Balance is required for Current Account ( 10,000 )
+    // Otherwise, set Minimum Balance as 0 for Savings Account in case of NULL.
+    
+    public static void validateMinimumBal(List<Bank_Account__c> lstBankAccs) {
+        
+        for(Bank_Account__c bankAcc : lstBankAccs) {
+            if( bankAcc.RecordTypeId == currentAccRecordTypeId && (bankAcc.Balance__c < 10000 || bankAcc.Balance__c == NULL) ) {
+                bankAcc.Balance__c.addError('Minimum Balance as 10,000 is required for Current Account');
+            } else if( bankAcc.RecordTypeId == savingAccRecordTypeId && bankAcc.Balance__c == NULL ) {
+                bankAcc.Balance__c = 0;
+            }
+        }
+        
+    }
+    
+
+}
