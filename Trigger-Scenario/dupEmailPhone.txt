@@ -7,6 +7,7 @@ trigger dupEmailPhone on Contact (before insert, before update) {
             phoneMap.put(contact.Phone, contact);
         }
         
+// Ajit
         if(trigger.isupdate){
             if(trigger.oldMap.get(contact.Id).Email != Contact.Email){
                 emailMap.put(contact.email, contact);
