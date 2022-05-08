@@ -1,0 +1,19 @@
+trigger ChangeShippingAddress on Account (before insert) {
+    for(account aObj : Trigger.new){
+        if(aObj.BillingStreet != null){
+            aobj.ShippingStreet = aobj.BillingStreet;
+        }
+        if(aobj.billingcity != null ){
+            aobj.shippingcity = aobj.billingcity;
+        }
+        
+        if(aobj.billingstate != null){
+            aobj.shippingstate = aobj.BillingState;
+        }
+        
+        if(aobj.BillingCountry != null){
+            aobj.ShippingCountry = aobj.BillingCountry;
+        }
+    }
+
+}

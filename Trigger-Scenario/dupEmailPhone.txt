@@ -1,0 +1,36 @@
+trigger dupEmailPhone on Contact (before insert, before update) {
+    map<string, contact> emailMap = new map<string, contact>();
+    map<string, contact> phoneMap = new map<string, contact>();
+    for(contact contact : trigger.new){
+        if(trigger.isinsert){
+            emailMap.put(contact.email, contact);
+            phoneMap.put(contact.Phone, contact);
+        }
+        
+        if(trigger.isupdate){
+            if(trigger.oldMap.get(contact.Id).Email != Contact.Email){
+                emailMap.put(contact.email, contact);
+            }
+            if(trigger.oldMap.get(contact.Id).Phone != Contact.Phone){
+                emailMap.put(contact.Phone, contact);
+        	}
+    	}
+	}
+    string errorMessage ='';
+    list<contact> existingContactList = [SELECT id, email, phone FROM contact 
+                                         WHERE email IN : emailMap.keyset() or 
+                                         phone IN : phoneMap.keyset()];
+    if(existingContactList.size()>0){
+        for(contact contactRec : existingContactList){
+            if(contactRec.email != null){
+                if(emailMap.get(contactRec.email) != null){
+                	errorMessage='Email';
+            	}
+            }
+            
+            if(errorMessage != ''){
+                trigger.new[0].Adderror('your contact' + errorMessage + 'already exists in system');
+            }
+        }
+    }
+}
