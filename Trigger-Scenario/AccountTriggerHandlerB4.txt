@@ -1,0 +1,22 @@
+public class AccountTriggerHandlerB4 {
+    
+    
+    public void onBeforeInsert(List<Account> lstNewAcc) {
+        for(Account acc : lstNewAcc) {
+            System.debug('Id => ' + acc.Id + ' : Name => ' + acc.Name);
+        }
+    }
+    
+    public void onAfterInsert(List<Account> lstNewAcc, Map<Id, Account> mapNewAcc) {
+        
+        Set<Id> setAccIds = mapNewAcc.keySet();
+        List<Account> listFromMap = mapNewAcc.values();
+        Map<Id, Account> mapFromList = new Map<Id, Account>(lstNewAcc);        
+        
+        for(Account acc : lstNewAcc) {
+            System.debug('Id => ' + acc.Id + ' : Name => ' + acc.Name);
+        }
+    }
+    
+	
+}

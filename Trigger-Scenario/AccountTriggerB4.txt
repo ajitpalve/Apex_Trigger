@@ -1,0 +1,76 @@
+trigger AccountTriggerB4 on Account (before insert, after insert, after update, before delete, after delete, after undelete) {
+    
+    // Before events - this types of event are used to validate the records.
+    // After events  - For exmaple, if u want to create a related contact whenever an account is created.
+    
+    
+    // Context Variables :-
+    	// Trigger.new    - list of new records (new version) - List<Account> lstNewAcc
+    	// Trigger.newMap - map of new records (new version)  - Map<Id, Account> mapNewAcc
+
+    	// Trigger.old    - list of old records (old version) - List<Account> lstOldAcc
+    	// Trigger.oldMap - map of old records (old version)  - Map<Id, Account> mapOldAcc
+    
+    // https://corpovisiontech.blogspot.com/2021/05/apex-triggers.html
+    
+    // Before Insert  - Trigger.new
+    // After Insert   - Trigger.new, Trigger.newMap
+    // Before Update  - Trigger.new, Trigger.newMap, Trigger.old, Trigger.oldMap
+    // After Update   - Trigger.new, Trigger.newMap, Trigger.old, Trigger.oldMap
+	// Before Delete  - Trigger.old, Trigger.oldMap
+	// After Delete   - Trigger.old, Trigger.oldMap
+	// After Undelete - Trigger.new, Trigger.newMap
+    
+    // Boolean Type Context variables
+        // Trigger.isBefore   - returns TRUE for BEFORE events, otherwise FALSE  - (before INSERT, before UPDATE, before DELETE)
+        // Trigger.isAfter    - returns TRUE for AFTER events, otherwise FALSE   - (after INSERT, after UPDATE, after DELETE, after UNDELETE)
+        // Trigger.isInsert   - returns TRUE for INSERT events, otherwise FALSE  - (before INSERT, after INSERT)
+        // Trigger.isUpdate   - returns TRUE for UPDATE events, otherwise FALSE  - (before UPDATE, after UPDATE)
+        // Trigger.isDelete   - returns TRUE for DELETE events, otherwise FALSE  - (before DELETE, after DELETE)
+        // Trigger.isUndelete - returns TRUE for UNDELETE events, otherwise FALSE  - (after UNDELETE)
+    
+    
+    String operationType = String.valueOf(Trigger.operationType);   
+    
+    AccountTriggerHandlerB4 objAccHandler = new AccountTriggerHandlerB4();
+    
+    if( Trigger.isBefore && Trigger.isInsert ) {
+        /*System.debug('Event : ' + Trigger.operationType); // BEFORE_INSERT, AFTER_INSERT    
+        System.debug('----------------------------------------------------------------------------');
+        System.debug('Trigger.new : ' + Trigger.new);
+        System.debug('Trigger.old : ' + Trigger.old);
+        System.debug('Trigger.newMap : ' + Trigger.newMap);
+        System.debug('Trigger.oldMap : ' + Trigger.oldMap);
+        System.debug('\n'); */
+        
+        System.debug('This is before insert event');
+        objAccHandler.onBeforeInsert(Trigger.new);
+    }
+    
+    if( Trigger.isAfter && Trigger.isInsert ) {
+        System.debug('This is after insert event');
+        objAccHandler.onAfterInsert(Trigger.new, Trigger.newMap);
+    }
+    
+    if( Trigger.isBefore && Trigger.isUpdate ) {
+        System.debug('This is before update event');
+        
+    }
+    
+    if( Trigger.isAfter && Trigger.isUpdate ) {
+        System.debug('This is after update event');
+    }
+    
+    if( Trigger.isBefore && Trigger.isDelete ) {
+        System.debug('This is before delete event');
+    }
+    
+    if( Trigger.isAfter && Trigger.isDelete ) {
+        System.debug('This is after delete event');
+    }
+    
+    if( Trigger.isAfter && Trigger.isUndelete ) {
+        System.debug('This is after undelete event');
+    }
+	    
+}
