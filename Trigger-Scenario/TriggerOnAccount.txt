@@ -1,0 +1,24 @@
+trigger TriggerOnAccount on Account (before insert) {
+    //context vriable (values which developer needs to write logoic)
+    //context variable : Trigger.new->List
+    
+    if(trigger.isBefore && trigger.isInsert){
+        for(account accRec: Trigger.new){
+            system.debug('acc recorrd in loop' + accRec);
+            if(accRec.ShippingCity==null)
+            	accRec.ShippingCity= accRec.BillingCity;
+            if(accRec.ShippingCountry==null)
+            	accRec.ShippingCountry= accRec.BillingCountry;
+            if(accRec.ShippingState==null)
+            	accRec.ShippingState= accRec.BillingState;
+            if(accRec.BillingStreet==null)
+            	accRec.BillingStreet= accRec.BillingStreet;
+            if(accRec.ShippingPostalCode==null)
+            	accRec.ShippingPostalCode= accRec.BillingPostalCode;
+        }
+    }
+    
+    //never write insert/update statement in before events
+
+}
+
