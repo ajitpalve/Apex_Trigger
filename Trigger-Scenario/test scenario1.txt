@@ -1,3 +1,5 @@
+# i have a requirement , while user creating an account , if user provides billing address but not shipping address, write a logic populate shipping address with billing address? how to achieve it? 
+
 trigger TriggerOnAccount on Account (before insert) {
     //context vriable (values which developer needs to write logoic)
     //context variable : Trigger.new->List

@@ -1,0 +1,11 @@
+#while user creating an account , if annual revenue provided by user is less than 1000, then write a logic to throw an error to user. how to achieve it?
+
+trigger AccountTrigger on account (before insert){
+if(trigger.IsBefore && trigger.IsInsert){
+for(Account accRec : trigger.new){
+if(accRec.AnnualRevenue<1000)
+accRec.addError('annual revenue cannot be less than 1000');
+}
+}
+}
+	
