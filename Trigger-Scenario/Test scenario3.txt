@@ -1,0 +1,17 @@
+#when user created an account , write a logic to create contact with same name and associate account and contact , how to achieve this??
+
+trigger AccountTrigger on Account (After insert){
+if(trigger.isAfter && trigger.IsInsert){
+
+List<Contact> conListToInsert = new List<Contact>();
+for(account accRec : Trigger.new){
+Contact con = new Contact();
+con.LastName = accRec.Name;
+con.AccountId = accRec.Id;
+conlistTOInsert.add(con);
+}
+if(conListtoInsert.size()>0);
+insert conListtoInsert;
+
+}
+}
