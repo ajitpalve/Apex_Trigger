@@ -1,0 +1,20 @@
+#When user updates account record , if user changes account name, throw an errir "account name once created cannot be modified." how to achieve this ??
+
+trigger TriggerOnAccount on Account(before Update){
+if(trigger.isBefore && trigger.IsUpdate){
+system.debug('New Value');
+system.debug(trigger.new);
+system.debug(Trigger.NewMap);
+
+system.debug('old values');
+system.debug(trigger.old);
+system.debug(trigger.OldMap);
+
+for(Account AccRecNew: trigger.new){
+account accRecOld = trigger.oldMap.get(accRecNew.Id);
+if(AccRecNew.Name != accRecOld.Name){
+accRecNew.adderror ('account name once created cannot be modified.');
+}
+}
+}
+}
