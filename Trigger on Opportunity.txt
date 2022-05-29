@@ -1,0 +1,29 @@
+#
+
+
+Trigger OpportunityTrigger on Opportunity(before insert){
+
+OpportunityTriggerHandler objOppoHandler = mew OpportunityTriggerHandler();
+
+if(Trigger.isinsert && Trigger.isbefore){
+objOppoHandler.setClosedDateOnOppo(Trigger.new);
+
+}
+
+}
+
+
+
+
+
+
+----------------TriggerHandler class---------------------
+
+
+public class OpportunityTriggerHandler {
+public void setClosedDateOnOppo(List<opportunity> lstNewOppo){
+for(opportunity objOpp : lstNewOppo){
+objOpp.CloseDate = date.today().addmonths(1);
+}
+}
+}
