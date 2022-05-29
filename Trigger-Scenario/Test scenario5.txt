@@ -1,0 +1,11 @@
+#on user updating an record, if billing address is changed, updte all its child contacts mail address field same as account billing address...
+
+
+trigger triggerOnAccount on Account(after update){
+if(trigger.isafter && trigger.isUpdate){
+for(Account accRecNew : Trigger.New){
+Account AccRecOld = Trigger.OldMap.get
+}
+}
+
+}
