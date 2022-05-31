@@ -1,0 +1,42 @@
+On Account there is picklist name Called Status with following 2 values “Active” , “Not Active”.
+Please write a Trigger to Validate Following Scenario:
+
+IF user is changing Account.Status__c value from “Active” to “Not Active”
+then do not allow users to change the Value to “Not Active” incase there is any Open Opportunity associated with Account. (Note: Validation Error message through Trigger)
+
+
+
+
+trigger validateAccountTrigger on account(before update ){
+
+private validateAccountTriggerHandler objHandler = new validateAccountTriggerHandler ();
+
+    if(trigger.isUpdate && trigger.isBefore){
+	objHandler.ErrorMsg(trigger.New);
+	}
+}
+
+
+
+
+
+
+
+=============================================================================================================
+
+public class validateAccountTriggerHandler {
+list<Account> lstAcc = new list<Account>();
+public void errorMsg(list<Account> lstNewAcc){
+if(lstNewAcc!=null){
+for(Account objAcc : IsNewAcc){
+if(ObjAcc.Status__c=='NOt Active'){
+List<Opportunity> lstOpp = [SELECT if, AccountID FROM Opportunity WHERE AccountID =: ObjAcc.ID];
+if(!lstOpp.isEMpty()){
+objAcc.addError('you can not make status as inactive, you have some opportunity');
+}
+}
+}
+} 
+}
+
+}
