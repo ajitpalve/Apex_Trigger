@@ -1,0 +1,20 @@
+#i want to display a value on account record which show no of contacts that are having phome numbers...??
+
+
+trigger ContactTrigger on Contact(after insert){
+if(Trigger.isInsert && trigger.isAfter){
+
+set<Id> accIDs = new Set<Id>();
+for(Contact con : Trigger.new){
+accIds.add(con.AccountId);
+}
+
+List<Account> lstAccs = [SELECT id, no_of_contact__c,(SELECT id FROM contacts)FROM Accont WHERE Id IN : AccIDs];
+for(Account acc : lstAccs){
+acc.no_of_contact__c = acc.Contact.size();
+}
+
+update lstAccs;
+}
+
+}
